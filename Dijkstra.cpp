@@ -5,6 +5,14 @@
 
 using namespace std;
 
+/**
+ * Computes the shortest path between two nodes in a graph using Dijkstra's algorithm.
+ *
+ * @param graph The graph containing nodes and edges with weights.
+ * @param start The index of the starting node for the path computation.
+ * @param end The index of the destination node for the path computation.
+ * @return A vector of integers representing the shortest path from the start node to the end node. If no path exists, returns an empty vector.
+ */
 Vector<int> dijkstra(const Graph &graph, const int start, const int end) {
     int n = graph.getSize();
 
@@ -69,6 +77,14 @@ Vector<int> dijkstra(const Graph &graph, const int start, const int end) {
     return reversedPath;
 }
 
+/**
+ * Prints the shortest path and total distance from the start vertex to the end vertex in a graph.
+ *
+ * @param graph The graph in which the path exists. The graph should contain adjacency lists for each vertex.
+ * @param path A vector of integers representing the sequence of vertices in the shortest path from start to end.
+ * @param start The starting vertex of the path.
+ * @param end The ending vertex of the path.
+ */
 void printPathAndDistance(const Graph &graph, const Vector<int> &path, const int start, const int end) {
     if (path.getSize() == 0) {
         cout << "No path exists from vertex " << start << " to vertex " << end << endl;
