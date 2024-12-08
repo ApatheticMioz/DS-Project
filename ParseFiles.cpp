@@ -60,7 +60,7 @@ void loadRoadNetwork(Graph &graph, const string &fileName) {
  * @param fileName The name of the file containing vehicle data in CSV format.
  * @param numVehicles The maximum number of vehicles to load.
  */
-void loadVehicles(Vector<Vector<int>> &vehicles, const string &fileName, int numVehicles) {
+void loadVehicles(Vector<Vector<int>> &vehicles, const string &fileName, int numVehicles = INT_MAX) {
     ifstream file(fileName);
     if (!file.is_open()) {
         cout << "Unable to open file: " << fileName << endl;
@@ -203,7 +203,7 @@ void loadRoadClosures(Vector<Vector<int> > &roadClosures, const string &fileName
  * @param fileName The name of the file containing emergency vehicle data.
  * @param numVehicles The maximum number of vehicle records to load.
  */
-void loadEmergencyVehicles(Vector<Vector<int>> &emergencyVehicles, const string &fileName, int numVehicles) {
+void loadEmergencyVehicles(Vector<Vector<int>> &emergencyVehicles, const string &fileName, int numVehicles = INT_MAX) {
     ifstream file(fileName);
     if (!file.is_open()) {
         cout << "Unable to open file: " << fileName << endl;
@@ -214,7 +214,7 @@ void loadEmergencyVehicles(Vector<Vector<int>> &emergencyVehicles, const string 
     getline(file, line); // Skip header
 
     while (getline(file, line) && emergencyVehicles.getSize() < numVehicles) {
-        if (line == ",,") continue;
+        if (line == ",,,") continue;
         istringstream iss(line);
         cout << line << endl;
         string temp;
