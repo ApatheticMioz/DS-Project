@@ -5,6 +5,11 @@
 #include <ctime>
 using namespace std;
 
+/**
+ * Represents an infinite distance used in the Dijkstra algorithm.
+ * Initialized to the maximum possible integer value defined by INT_MAX.
+ * Used as the initial distance for vertices to signify they are unvisited or unreachable.
+ */
 constexpr float INF = INT_MAX;
 
 // Dijkstra's algorithm to find the shortest path
@@ -68,6 +73,14 @@ constexpr float INF = INT_MAX;
 //     return path;
 // }
 
+/**
+ * Determines if there is a blocked edge between two nodes.
+ *
+ * @param blockedEdges A vector of vectors containing pairs of integers representing blocked edges.
+ * @param u The first node to check for a blocked edge.
+ * @param v The second node to check for a blocked edge.
+ * @return True if an edge between node u and node v is blocked, false otherwise.
+ */
 bool isBlockedEdge(const Vector<Vector<int>> &blockedEdges, int u, int v) {
     for (int i = 0; i < blockedEdges.getSize(); i++) {
         // Access each closure using the index i
@@ -79,7 +92,16 @@ bool isBlockedEdge(const Vector<Vector<int>> &blockedEdges, int u, int v) {
     return false;   // The road is not blocked
 }
 
-// Modified Dijkstra's algorithm that accounts for blocked roads
+/**
+ * Computes the shortest path in a graph from a start node to an end node while avoiding specified blocked edges.
+ *
+ * @param graph The graph to search, represented as an adjacency list.
+ * @param start The starting node of the path search.
+ * @param end The destination node of the path search.
+ * @param blockedEdges A vector of pairs representing edges that should be avoided in the path.
+ * @return A vector of integers representing the shortest path from start to end node, avoiding blocked edges.
+ *         If no path is found, an empty vector is returned.
+ */
 Vector<int> dijkstraPath(const Graph &graph, const int start, const int end, const Vector<Vector<int>> &blockedEdges) {
     auto *distance = new float[graph.getSize()];
     auto visited = new bool[graph.getSize()];
@@ -148,7 +170,16 @@ Vector<int> dijkstraPath(const Graph &graph, const int start, const int end, con
 }
 
 
-// Main function to populate the hash table with congestion levels
+/**
+ * Populates the hash table with congestion data derived from the graph, taking into account road closures and vehicle paths.
+ *
+ * @param graph The graph representing the network of roads between various nodes.
+ * @param vehicles A 2D vector where each sub-vector contains vehicle data including start and end nodes.
+ * @param emergencyVehicles A 2D vector where each sub-vector contains emergency vehicle data including start and end nodes.
+ * @param roadClosures A 2D vector where each sub-vector represents a road closure with starting and ending nodes and closure status.
+ * @param trafficSignals A 2D vector representing traffic signal data (currently unused in the function).
+ * @param hashTable The hash table used to store and display congestion data including regular and emergency vehicle counts.
+ */
 void populateCongestionHashTable(Graph &graph, Vector<Vector<int>> &vehicles, Vector<Vector<int>> &emergencyVehicles, Vector<Vector<int>> &roadClosures, Vector<Vector<int>> &trafficSignals, HashTable &hashTable) {
 
     // Step 2: Apply road closures
