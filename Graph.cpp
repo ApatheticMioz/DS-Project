@@ -152,6 +152,18 @@ public:
         }
     }
 
+    void setEdgeWeight(const int u, const int v, const float weight) {
+        Node* edge = adjacencyList[u].getHead();
+        while (edge != nullptr) {
+            if (edge->data == v) {
+                edge->weight = weight;
+                return;
+            }
+            edge = edge->next;
+        }
+        adjacencyList[u].insertAtEnd(v, weight);
+    }
+
     /**
      * @brief Displays the adjacency list of each vertex in the graph.
      *
@@ -167,6 +179,64 @@ public:
             cout << "Vertex " << i << ": ";
             adjacencyList[i].display();
         }
+    }
+
+    void bfs() {
+        Vector<bool> visited(numVertices, false);
+        Queue<int> queue;
+
+        for (int i = 0; i < numVertices; ++i) {
+            if (!visited[i]) {
+                queue.enqueue(i);
+                visited[i] = true;
+
+                while (!queue.isEmpty()) {
+                    int current = queue.dequeue();
+                    cout << current << " ";
+
+                    LinkedList& adjList = adjacencyList[current];
+                    Node* temp = adjList.getHead();
+                    while (temp != nullptr) {
+                        int neighbor = temp->data;
+                        if (!visited[neighbor]) {
+                            queue.enqueue(neighbor);
+                            visited[neighbor] = true;
+                        }
+                        temp = temp->next;
+                    }
+                }
+            }
+        }
+        cout << endl;
+    }
+
+    void dfs() {
+        Vector<bool> visited(numVertices, false);
+        Stack<int> stack;
+
+        for (int i = 0; i < numVertices; ++i) {
+            if (!visited[i]) {
+                stack.push(i);
+                visited[i] = true;
+
+                while (!stack.isEmpty()) {
+                    int current = stack.pop();
+                    cout << current << " ";
+
+                    LinkedList& adjList = adjacencyList[current];
+                    Node* temp = adjList.getHead();
+                    while (temp != nullptr) {
+                        int neighbor = temp->data;
+                        if (!visited[neighbor]) {
+                            stack.push(neighbor);
+                            visited[neighbor] = true;
+                        }
+                        temp = temp->next;
+                    }
+                }
+            }
+        }
+        cout << endl;
     }
 };
 
