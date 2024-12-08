@@ -1,4 +1,7 @@
 #include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
 using namespace std;
 
 /**
@@ -16,8 +19,7 @@ public:
     float weight;
     /**
      * Pointer to the next node in a linked list.
-     * This member variable is used to navigate through the linked list by linking
-     * nodes together, with each node pointing to the subsequent node in the list.
+     * Used to link each node to the subsequent node, enabling traversal of the list.
      */
     Node *next;
 
@@ -34,7 +36,8 @@ public:
 };
 
 /**
- * Represents a singly linked list.
+ * Represents a singly linked list structure that supports basic operations like insertion,
+ * deletion, and traversal. It manages nodes containing integer data and float weight.
  */
 class LinkedList {
     /**
@@ -79,6 +82,56 @@ public:
         head = nullptr;
     }
 
+
+    /**
+     * @brief Copy constructor for the LinkedList class.
+     *
+     * Creates a deep copy of the provided linked list, ensuring that each node in the
+     * original list is duplicated and placed in the same order in the new list.
+     *
+     * @param other The LinkedList instance to copy.
+     */
+    LinkedList(const LinkedList &other) : head(nullptr) {
+        if (other.head) {
+            head = new Node(other.head->data, other.head->weight);
+            Node *current = head;
+            Node *otherCurrent = other.head->next;
+
+            while (otherCurrent) {
+                current->next = new Node(otherCurrent->data, otherCurrent->weight);
+                current = current->next;
+                otherCurrent = otherCurrent->next;
+            }
+        }
+    }
+
+    /**
+     * @brief Assignment operator overload for the LinkedList class.
+     *
+     * Assigns a deep copy of the given linked list to this instance.
+     *
+     * @param other The LinkedList instance to assign.
+     * @return A reference to this LinkedList instance with the copied content.
+     */
+    LinkedList &operator=(const LinkedList &other) {
+        if (this != &other) {
+            deleteList();
+
+            if (other.head) {
+                head = new Node(other.head->data, other.head->weight);
+                Node *current = head;
+                Node *otherCurrent = other.head->next;
+
+                while (otherCurrent) {
+                    current->next = new Node(otherCurrent->data, otherCurrent->weight);
+                    current = current->next;
+                    otherCurrent = otherCurrent->next;
+                }
+            }
+        }
+        return *this;
+    }
+
     /**
      * Inserts a new node with the specified value and weight at the beginning of the linked list.
      *
@@ -92,10 +145,10 @@ public:
     }
 
     /**
-     * Inserts a new node with the given value and weight at the end of the linked list.
+     * Inserts a new node with the specified value and weight at the end of the linked list.
      *
      * @param value The integer value to be stored in the new node.
-     * @param weight The floating-point weight to be associated with the new node.
+     * @param weight The float weight to be stored in the new node.
      */
     void insertAtEnd(const int value, const float weight) {
         auto newNode = new Node(value, weight);
@@ -114,15 +167,15 @@ public:
     }
 
     /**
-     * Inserts a new node with given value and weight at the specified position in the linked list.
+     * Inserts a new node with the given value and weight at the specified position in the list.
      *
-     * @param value The integer value to be stored in the new node.
-     * @param weight The float weight to be stored in the new node.
-     * @param position The position at which to insert the new node. Indexing starts from 0.
+     * @param value The integer value to store in the new node.
+     * @param weight The float weight to store in the new node.
+     * @param position The position at which to insert the new node, starting from 0.
      */
     void insertAtPosition(const int value, const float weight, const int position) {
         if (position < 0) {
-            cerr << "Error: Position should be >= 0." << endl;
+            cout << "Error: Position should be >= 0." << endl;
             return;
         }
 
@@ -139,7 +192,7 @@ public:
         }
 
         if (!temp) {
-            cerr << "Error: Position out of range." << endl;
+            cout << "Error: Position out of range." << endl;
             delete newNode;
             return;
         }
@@ -154,7 +207,7 @@ public:
      */
     void deleteFromBeginning() {
         if (!head) {
-            cerr << "Error: List is empty." << endl;
+            cout << "Error: List is empty." << endl;
             return;
         }
 
@@ -170,7 +223,7 @@ public:
      */
     void deleteFromEnd() {
         if (!head) {
-            cerr << "Error: List is empty." << endl;
+            cout << "Error: List is empty." << endl;
             return;
         }
 
@@ -190,14 +243,13 @@ public:
     }
 
     /**
-     * Deletes a node from the linked list at the specified position.
-     * If the position is invalid, an error message is output.
+     * Deletes a node from the specified position in a singly linked list.
      *
-     * @param position The index of the node to be deleted, where the first node is at position 0.
+     * @param position The zero-based position of the node to delete. Position should be greater than or equal to 0.
      */
     void deleteFromPosition(const int position) {
         if (position < 0) {
-            cerr << "Error: Position should be >= 0." << endl;
+            cout << "Error: Position should be >= 0." << endl;
             return;
         }
 
@@ -212,7 +264,7 @@ public:
         }
 
         if (!temp || !temp->next) {
-            cerr << "Error: Position out of range." << endl;
+            cout << "Error: Position out of range." << endl;
             return;
         }
         Node *nodeToDelete = temp->next;
@@ -228,7 +280,7 @@ public:
      */
     void deleteByValue(const int value) {
         if (!head) {
-            cerr << "Error: List is empty." << endl;
+            cout << "Error: List is empty." << endl;
             return;
         }
 
@@ -243,7 +295,7 @@ public:
         }
 
         if (!temp->next) {
-            cerr << "Error: Value not found." << endl;
+            cout << "Error: Value not found." << endl;
             return;
         }
 
@@ -271,7 +323,7 @@ public:
      */
     void display() const {
         if (!head) {
-            cerr << "Error: List is empty." << endl;
+            cout << "Error: List is empty." << endl;
             return;
         }
 
