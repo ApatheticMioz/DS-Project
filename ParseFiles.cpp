@@ -5,6 +5,18 @@
 
 using namespace std;
 
+/**
+ * Loads a road network from a CSV file into a given graph.
+ *
+ * The CSV file is expected to have a header and subsequent rows
+ * that define edges in the form of: Intersection1, Intersection2, TravelTime.
+ * Each edge is added to the graph with an associated weight (TravelTime).
+ * The intersections are internally represented by integers derived from their respective
+ * first character's alphabetical index (e.g., 'A' -> 0, 'B' -> 1, ...).
+ *
+ * @param graph The graph object where the road network will be loaded.
+ * @param fileName The name of the CSV file containing the road network data.
+ */
 void loadRoadNetwork(Graph &graph, const string &fileName) {
     ifstream file(fileName);
     if (!file.is_open()) {
@@ -35,6 +47,19 @@ void loadRoadNetwork(Graph &graph, const string &fileName) {
     file.close();
 }
 
+/**
+ * Loads vehicle data from a CSV file into a vector of vectors.
+ *
+ * The function reads entries from a specified file, parsing each line into
+ * vehicle data that includes an identifier and two location indices. It
+ * continues to parse lines until the specified number of vehicles is reached
+ * or the file has no more lines. Each vehicle's data consists of three
+ * integers: ID, start location, and end location.
+ *
+ * @param vehicles A reference to a vector where parsed vehicle data will be stored.
+ * @param fileName The name of the file containing vehicle data in CSV format.
+ * @param numVehicles The maximum number of vehicles to load.
+ */
 void loadVehicles(Vector<Vector<int>> &vehicles, const string &fileName, int numVehicles) {
     ifstream file(fileName);
     if (!file.is_open()) {
@@ -69,6 +94,20 @@ void loadVehicles(Vector<Vector<int>> &vehicles, const string &fileName, int num
     file.close();
 }
 
+/**
+ * Loads traffic signal data from a file into a vector.
+ *
+ * This function reads a specified file containing traffic signal information.
+ * The file is expected to have data in a comma-separated format with a header.
+ * Each line after the header should contain an intersection identifier and a green time value.
+ *
+ * @param trafficSignals A vector of vectors where the traffic signal data will be stored.
+ *                       Each inner vector contains two integers: the first is the intersection index (starting from 'A'),
+ *                       and the second is the green time for that intersection.
+ * @param fileName The name of the file containing the traffic signal data.
+ *
+ * If the file cannot be opened, a message will be printed to the standard output.
+ */
 void loadTrafficSignals(Vector<Vector<int>> &trafficSignals, const string &fileName) {
     ifstream file(fileName);
     if (!file.is_open()) {
@@ -99,6 +138,19 @@ void loadTrafficSignals(Vector<Vector<int>> &trafficSignals, const string &fileN
     file.close();
 }
 
+/**
+ * Loads road closure data from a specified file and stores it in a provided vector.
+ *
+ * Reads and parses a CSV file to extract road closure information between intersections.
+ * Each line in the file should contain data in the format: intersection1,intersection2,status.
+ * Intersections are represented as uppercase letters, and the status can be one of:
+ * "Under Repair", "Blocked", or default to "Clear".
+ *
+ * @param roadClosures A reference to a Vector of Vectors storing road closure data.
+ *                     Each inner vector contains three integers: two intersection indices
+ *                     and one status code.
+ * @param fileName The path to the CSV file containing road closure information.
+ */
 void loadRoadClosures(Vector<Vector<int> > &roadClosures, const string &fileName) {
     ifstream file(fileName);
     if (!file.is_open()) {
@@ -143,6 +195,14 @@ void loadRoadClosures(Vector<Vector<int> > &roadClosures, const string &fileName
     file.close();
 }
 
+/**
+ * Loads emergency vehicle data from a specified file into a vector of vectors.
+ * Each vehicle's data includes an ID, start point, end point, and priority level.
+ *
+ * @param emergencyVehicles A reference to a vector where emergency vehicle data will be stored.
+ * @param fileName The name of the file containing emergency vehicle data.
+ * @param numVehicles The maximum number of vehicle records to load.
+ */
 void loadEmergencyVehicles(Vector<Vector<int>> &emergencyVehicles, const string &fileName, int numVehicles) {
     ifstream file(fileName);
     if (!file.is_open()) {
