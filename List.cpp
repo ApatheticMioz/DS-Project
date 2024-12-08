@@ -253,6 +253,17 @@ public:
     }
 
     /**
+     * @brief Checks if the linked list is empty.
+     *
+     * Determines whether the head of the linked list is null, indicating no nodes are present.
+     *
+     * @return True if the linked list has no nodes, false otherwise.
+     */
+    bool isEmpty() const {
+        return head == nullptr;
+    }
+
+    /**
      * @brief Displays the contents of the linked list.
      *
      * Prints each node's data and weight followed by an arrow.
