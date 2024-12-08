@@ -17,6 +17,7 @@ class HashTable {
 
     HashEntry table[HT_SIZE];
     int occupied;
+    int randomProbes[HT_SIZE];
 
     int hashFunction(int key) const {
         return key % HT_SIZE;
@@ -32,6 +33,7 @@ public:
             table[i].key = EMPTY_KEY;
             table[i].regularCount = 0;
             table[i].emergencyCount = 0;
+            randomProbes[i] = rand() % HT_SIZE;
         }
         occupied = 0;
     }
@@ -54,7 +56,7 @@ public:
         int attempts = 0;
         const int MAX_ATTEMPTS = HT_SIZE;
         while (attempts < MAX_ATTEMPTS) {
-            int randIndex = getRandomIndex();
+            int randIndex = randomProbes[attempts] % HT_SIZE;
             if (table[randIndex].key == EMPTY_KEY || table[randIndex].key == DELETED_KEY) {
                 table[randIndex].key = key;
                 table[randIndex].regularCount = 0;
@@ -85,7 +87,7 @@ public:
         int attempts = 0;
         const int MAX_ATTEMPTS = HT_SIZE;
         while (attempts < MAX_ATTEMPTS) {
-            int randIndex = getRandomIndex();
+            int randIndex = randomProbes[attempts] % HT_SIZE;
             if (table[randIndex].key == key) {
                 table[randIndex].key = DELETED_KEY;
                 table[randIndex].regularCount = 0;
@@ -112,7 +114,7 @@ public:
         int attempts = 0;
         const int MAX_ATTEMPTS = HT_SIZE;
         while (attempts < MAX_ATTEMPTS) {
-            int randIndex = getRandomIndex();
+            int randIndex = randomProbes[attempts] % HT_SIZE;
             if (table[randIndex].key == key) {
                 return (isEmergency) ? table[randIndex].emergencyCount : table[randIndex].regularCount;
             }
@@ -141,7 +143,7 @@ public:
         int attempts = 0;
         const int MAX_ATTEMPTS = HT_SIZE;
         while (attempts < MAX_ATTEMPTS) {
-            int randIndex = getRandomIndex();
+            int randIndex = randomProbes[attempts] % HT_SIZE;
             if (table[randIndex].key == key) {
                 if (isEmergency) {
                     table[randIndex].emergencyCount++;
@@ -178,7 +180,7 @@ public:
         int attempts = 0;
         const int MAX_ATTEMPTS = HT_SIZE;
         while (attempts < MAX_ATTEMPTS) {
-            int randIndex = getRandomIndex();
+            int randIndex = randomProbes[attempts] % HT_SIZE;
             if (table[randIndex].key == key) {
                 if (isEmergency) {
                     if (table[randIndex].emergencyCount > 0) {
@@ -205,6 +207,31 @@ public:
                      << " - Emergency Count: " << table[i].emergencyCount << endl;
             }
         }
+    }
+
+    float calculateDensity(int u, int v) const {
+        int key = u * 100 + v;
+        int index = hashFunction(key);
+        if (table[index].key == key) {
+            // Calculate density as the sum of regular and emergency counts
+            return table[index].regularCount + table[index].emergencyCount;
+        }
+        if (table[index].key == EMPTY_KEY) {
+            cout << "Road (" << static_cast<char>(u + 65) << ", " << static_cast<char>(v + 65) << ") not found in hash table." << endl;
+            return -1; // Indicate not found
+        }
+        // Start random probing to find the key
+        int attempts = 0;
+        const int MAX_ATTEMPTS = HT_SIZE;
+        while (attempts < MAX_ATTEMPTS) {
+            int randIndex = randomProbes[attempts] % HT_SIZE;
+            if (table[randIndex].key == key) {
+                return table[randIndex].regularCount + table[randIndex].emergencyCount;
+            }
+            attempts++;
+        }
+        cout << "Road (" << static_cast<char>(u + 65) << ", " << static_cast<char>(v + 65) << ") not found in hash table." << endl;
+        return -1; // Indicate not found
     }
 
     float loadFactor() const {
