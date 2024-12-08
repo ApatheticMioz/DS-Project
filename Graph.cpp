@@ -56,6 +56,33 @@ public:
     }
 
     /**
+     * Retrieves the number of vertices in the graph.
+     * @return The number of vertices in the graph.
+     */
+    int getSize() const {
+        return numVertices;
+    }
+
+    /**
+    * @brief Returns a const reference to the adjacency list of a specific vertex.
+    *
+    * This function provides access to the linked list of adjacent edges for the
+    * specified vertex. It performs boundary checks to ensure the vertex index
+    * is valid. If the vertex is out of range, an error message is displayed.
+    *
+    * @param vertex The index of the vertex whose adjacency list is to be returned.
+    * @return A const reference to the linked list representing the adjacency list of the vertex.
+    */
+    const LinkedList &getAdjacencyList(const int vertex) const {
+        if (vertex < 0 || vertex >= numVertices) {
+            cout << "Error: Vertex out of range." << endl;
+            return adjacencyList[0];
+        }
+
+        return adjacencyList[vertex];
+    }
+
+    /**
      * Adds an edge between two vertices in the graph with a specified weight.
      *
      * @param u The starting vertex of the edge. Must be within valid vertex range.
@@ -79,6 +106,11 @@ public:
      * total number of vertices by one.
      */
     void addNode() {
+        if (numVertices > 26) {
+            cout << "Error: Too many vertices." << endl;
+            return;
+        }
+
         adjacencyList.push_back(LinkedList());
         numVertices++;
     }

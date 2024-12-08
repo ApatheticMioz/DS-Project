@@ -271,6 +271,18 @@ public:
     }
 
     /**
+     * @brief Retrieves the head node of the linked list.
+     *
+     * Provides access to the first node in the list.
+     *
+     * @return A pointer to the head node of the linked list.
+     *         Returns nullptr if the list is empty.
+     */
+    Node* getHead() const {
+        return head;
+    }
+
+    /**
      * Deletes the first occurrence of a node with the specified value from the linked list.
      * If the list is empty or the value is not found, an error message is displayed.
      *
