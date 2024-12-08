@@ -2,74 +2,72 @@
 using namespace std;
 
 /**
- * Represents a single node in a linked list.
+ * Represents a node in a singly linked list containing an integer data and a float weight.
  */
 class Node {
     /**
-     * Stores the value of the node in a linked list.
+     * Represents an integer data value stored in a node of a linked list.
      */
 public:
     int data;
     /**
-     * Represents the weight of a node in the linked list.
-     * Used to store additional information associated with the node's data.
+     * Represents the weight associated with a node in the linked list.
      */
-    int weight;
+    float weight;
     /**
-     * Pointer to the next node in the linked list.
-     * It facilitates traversing the list by pointing to the subsequent node.
-     * Initialized to nullptr by default, indicating the end of the list when no next node is available.
+     * Pointer to the next node in a linked list.
+     * This member variable is used to navigate through the linked list by linking
+     * nodes together, with each node pointing to the subsequent node in the list.
      */
     Node *next;
 
     /**
-     * Constructor for the Node class.
+     * Constructs a new Node object with given data and weight.
+     * Initializes the next pointer to nullptr.
      *
-     * Initializes a new Node object with the provided data and weight values.
-     *
-     * @param d The data value for the node.
-     * @param w The weight value associated with the node.
-     * @return A new instance of the Node class with data and weight initialized. The `next` pointer is set to nullptr.
+     * @param d The integer data to be stored in the node.
+     * @param w The float weight associated with the node.
+     * @return An instance of a Node object with specified data and weight.
      */
-    Node(const int d, const int w) : data(d), weight(w), next(nullptr) {
+    Node(const int d, const float w) : data(d), weight(w), next(nullptr) {
     }
 };
 
 /**
- * A class representing a singly linked list.
+ * Represents a singly linked list.
  */
 class LinkedList {
     /**
-     * @brief A pointer to the first node in a linked list.
-     *
-     * This variable serves as a reference to the head of a singly linked list,
-     * enabling traversal, insertion, and deletion operations. If the linked list
-     * is empty, this pointer will be null.
+     * A pointer to the first node in a linked list.
+     * Initially set to nullptr, it serves as the entry point to the list.
      */
     Node *head;
 
     /**
-     * Constructs an empty LinkedList with the head initialized to nullptr.
-     * @return A new instance of LinkedList with no elements.
+     * @brief Constructs an empty LinkedList.
+     *
+     * Initializes the head of the list to nullptr, indicating that the list is initially empty.
+     *
+     * @return An instance of LinkedList with no nodes.
      */
 public:
     LinkedList() : head(nullptr) {
     }
 
     /**
-     * Destructor for the LinkedList class.
-     * Cleans up allocated memory by deleting all the nodes in the linked list.
+     * @brief Destructor for the LinkedList class.
+     *
+     * This destructor ensures that all dynamically allocated nodes in the linked list
+     * are properly deleted, preventing memory leaks by calling the deleteList() method.
      */
     ~LinkedList() {
         deleteList();
     }
 
     /**
-     * Deletes all nodes in the linked list, freeing the allocated memory.
-     *
-     * This method traverses the linked list starting from the head, deleting each node to
-     * ensure that all dynamically allocated memory is properly freed. After the list is
-     * deleted, the head pointer is set to nullptr to indicate that the list is empty.
+     * Deletes all nodes in the linked list, freeing their memory.
+     * Sets the head pointer to nullptr after deletion to indicate
+     * that the list is empty.
      */
     void deleteList() {
         Node *current = head;
@@ -82,24 +80,24 @@ public:
     }
 
     /**
-     * Inserts a new node with specified value and weight at the beginning of the linked list.
+     * Inserts a new node with the specified value and weight at the beginning of the linked list.
      *
      * @param value The integer value to be stored in the new node.
-     * @param weight The integer weight to be associated with the new node.
+     * @param weight The float weight to be stored in the new node.
      */
-    void insertAtBeginning(const int value, const int weight) {
+    void insertAtBeginning(const int value, const float weight) {
         auto newNode = new Node(value, weight);
         newNode->next = head;
         head = newNode;
     }
 
     /**
-     * Inserts a new node with the specified value and weight at the end of the linked list.
+     * Inserts a new node with the given value and weight at the end of the linked list.
      *
-     * @param value The data value to be stored in the new node.
-     * @param weight The weight associated with the new node.
+     * @param value The integer value to be stored in the new node.
+     * @param weight The floating-point weight to be associated with the new node.
      */
-    void insertAtEnd(const int value, const int weight) {
+    void insertAtEnd(const int value, const float weight) {
         auto newNode = new Node(value, weight);
 
         if (!head) {
@@ -116,15 +114,13 @@ public:
     }
 
     /**
-     * Inserts a new node with a specified value and weight at the given position in the list.
-     * If the position is less than 0, an error message is displayed.
-     * If the position is greater than the length of the list, an error message is displayed.
+     * Inserts a new node with given value and weight at the specified position in the linked list.
      *
      * @param value The integer value to be stored in the new node.
-     * @param weight The integer weight to be stored in the new node.
-     * @param position The zero-based position at which to insert the new node.
+     * @param weight The float weight to be stored in the new node.
+     * @param position The position at which to insert the new node. Indexing starts from 0.
      */
-    void insertAtPosition(const int value, const int weight, const int position) {
+    void insertAtPosition(const int value, const float weight, const int position) {
         if (position < 0) {
             cerr << "Error: Position should be >= 0." << endl;
             return;
@@ -153,12 +149,8 @@ public:
     }
 
     /**
-     * Deletes the node at the beginning of the linked list.
-     *
-     * If the list is empty, an error message is logged and no action is taken.
-     *
-     * Note: The function assumes that Node objects are dynamically allocated and
-     * need to be deallocated using `delete`.
+     * Removes the first node from the beginning of the linked list.
+     * Prints an error message if the list is empty.
      */
     void deleteFromBeginning() {
         if (!head) {
@@ -173,10 +165,8 @@ public:
 
     /**
      * Deletes the last node from the linked list.
-     *
      * If the list is empty, an error message is displayed.
-     * If the list contains only one node, that node is deleted and the list becomes empty.
-     * For a list with multiple nodes, the last node is removed by traversing to the node before the last.
+     * If the list has only one node, it deletes that node and sets the head to nullptr.
      */
     void deleteFromEnd() {
         if (!head) {
@@ -200,11 +190,10 @@ public:
     }
 
     /**
-     * Deletes the node at a specific position in the linked list.
+     * Deletes a node from the linked list at the specified position.
+     * If the position is invalid, an error message is output.
      *
-     * @param position The zero-based index of the node to be deleted.
-     *                 If negative, an error message is displayed.
-     *                 If out of range, an error message is displayed.
+     * @param position The index of the node to be deleted, where the first node is at position 0.
      */
     void deleteFromPosition(const int position) {
         if (position < 0) {
@@ -232,10 +221,10 @@ public:
     }
 
     /**
-     * Deletes the first occurrence of a node containing the specified value from the linked list.
-     * It prints an error message if the list is empty or if the value is not found.
+     * Deletes the first occurrence of a node with the specified value from the linked list.
+     * If the list is empty or the value is not found, an error message is displayed.
      *
-     * @param value The value to be deleted from the linked list.
+     * @param value The integer value of the node to be deleted from the list.
      */
     void deleteByValue(const int value) {
         if (!head) {
@@ -266,9 +255,8 @@ public:
     /**
      * @brief Displays the contents of the linked list.
      *
-     * The method will iterate through the linked list and print the data and weight
-     * of each node in the format "data weight ->", followed by a terminating "NULL".
-     * If the list is empty, an error message is displayed.
+     * Prints each node's data and weight followed by an arrow.
+     * Outputs an error message if the list is empty.
      */
     void display() const {
         if (!head) {
@@ -278,7 +266,7 @@ public:
 
         Node *temp = head;
         while (temp) {
-            cout << temp->data << ' ' << temp->weight << " -> ";
+            cout << "(" << temp->data << ", " << temp->weight << ") -> ";
             temp = temp->next;
         }
         cout << "NULL" << endl;

@@ -3,27 +3,30 @@
 using namespace std;
 
 /**
- * Graph class implements an adjacency list representation of a graph.
+ * @class Graph
+ * @brief Represents a graph structure using adjacency lists.
  */
 class Graph {
     /**
-     * A pointer to an array of LinkedList objects representing the adjacency list
-     * of the graph. Each LinkedList at a particular index contains the edges
-     * originating from the vertex represented by that index. It is used to manage
-     * the storage and manipulation of the graph's edges.
+     * @brief An array of linked lists representing the adjacency list of a graph.
+     *
+     * Each element of the array is a linked list that maintains the vertices
+     * adjacent to a vertex in the graph. This data structure efficiently supports
+     * graph operations, such as adding or removing edges. It dynamically resizes
+     * during the graph modifications.
      */
     LinkedList *adjacencyList;
     /**
-     * @brief Represents the number of vertices in the graph.
-     *
-     * This variable holds the current count of vertices in a graph structure.
-     * It is initially set during the Graph's construction and may be updated
-     * through various operations like resizing the graph.
+     * Represents the number of vertices currently in the graph.
      */
     int numVertices;
 
     /**
-     * Resizes the graph to accommodate a new number of vertices.
+     * Resizes the graph to the specified number of vertices.
+     *
+     * The method creates a new adjacency list of the specified size,
+     * copies existing vertices to the new list, and updates the internal
+     * state of the graph to reflect the new number of vertices.
      *
      * @param newSize The new number of vertices for the graph.
      */
@@ -40,12 +43,11 @@ class Graph {
     }
 
     /**
-     * Constructs a new Graph with a specified number of vertices.
-     * Initializes an adjacency list for each vertex.
+     * Constructs a graph with a specified number of vertices.
+     * Initializes the adjacency list for each vertex.
      *
-     * @param nVert The number of vertices to be included in the graph.
-     *              Must be a non-negative integer.
-     * @return A Graph object with an initialized adjacency list.
+     * @param nVert The number of vertices in the graph.
+     * @return An instance of the Graph class with initialized vertices.
      */
 public:
     explicit Graph(const int nVert) {
@@ -54,22 +56,23 @@ public:
     }
 
     /**
-     * Destructor for the Graph class.
+     * @brief Destructor for the Graph class.
      *
-     * This method is responsible for releasing the memory allocated
-     * for the adjacency list of the graph, ensuring to delete the
-     * dynamically allocated array of LinkedList objects.
+     * This destructor deallocates the memory allocated for the adjacency list
+     * of the graph, ensuring that all resources are properly released.
      */
     ~Graph() {
         delete[] adjacencyList;
     }
 
     /**
-     * Copy constructor for the Graph class.
-     * Creates a deep copy of the given Graph object.
+     * @brief Copy constructor for the Graph class.
      *
-     * @param other The Graph object to be copied.
-     * @return A new Graph object that is a deep copy of 'other'.
+     * Creates a new Graph instance by copying data from another Graph object.
+     * It replicates the number of vertices and duplicates the adjacency list.
+     *
+     * @param other A constant reference to the Graph object to be copied.
+     * @return A new Graph instance that is a copy of the provided Graph.
      */
     Graph(const Graph &other) {
         numVertices = other.numVertices;
@@ -81,11 +84,13 @@ public:
     }
 
     /**
-     * Assigns the contents of one Graph object to another.
-     * It performs a deep copy of the adjacency list from the source graph to the current graph.
+     * @brief Assignment operator for the Graph class.
      *
-     * @param other The Graph object to be copied into the current graph.
-     * @return A reference to the current Graph object after assignment.
+     * Copies the contents of another Graph object to this Graph object,
+     * clearing any existing data in the destination Graph.
+     *
+     * @param other The Graph object to be copied.
+     * @return A reference to this Graph object after assignment.
      */
     Graph &operator=(const Graph &other) {
         if (this == &other) {
@@ -105,14 +110,15 @@ public:
     }
 
     /**
-     * Adds a directed edge from vertex u to vertex v with a given weight.
-     * If necessary, resizes the graph to accommodate new vertices.
+     * Adds an edge to the graph with a specified weight between two vertices.
+     * If either vertex is out of range, the function outputs an error message.
+     * The graph is resized if necessary to accommodate the new vertices.
      *
-     * @param u The starting vertex of the edge.
-     * @param v The ending vertex of the edge.
-     * @param weight The weight of the edge.
+     * @param u The starting vertex of the edge. Must be within the range of existing vertices.
+     * @param v The ending vertex of the edge. Must be within the range of existing vertices.
+     * @param weight The weight of the edge between vertex u and vertex v.
      */
-    void addEdge(const int u, const int v, const int weight) {
+    void addEdge(const int u, const int v, const float weight) {
         if (u < 0 || v < 0 || u > numVertices || v > numVertices) {
             cerr << "Error: Vertices out of range." << endl;
             return;
@@ -127,16 +133,22 @@ public:
     }
 
     /**
-     * Adds a new node to the graph by increasing the number of vertices by one.
-     * The method resizes the internal adjacency list to accommodate an additional node.
+     * @brief Adds a new node to the graph by increasing the number of vertices.
+     *
+     * This function increments the count of vertices in the graph and adjusts the
+     * adjacency list to accommodate the new vertex. The adjacency list is resized
+     * to hold an additional empty list for the new node, preserving existing edges.
      */
     void addNode() {
         resizeGraph(numVertices + 1);
     }
 
     /**
-     * Removes the edge from vertex u to vertex v in the graph's adjacency list.
-     * If the vertices u or v are out of range, an error message is displayed.
+     * @brief Deletes an edge between two vertices in the graph.
+     *
+     * Removes the edge from vertex u to vertex v by deleting v from
+     * the adjacency list of u. If the vertices are out of range,
+     * an error message is printed.
      *
      * @param u The starting vertex of the edge to be deleted.
      * @param v The ending vertex of the edge to be deleted.
@@ -151,12 +163,12 @@ public:
     }
 
     /**
-     * Deletes a node and its associated edges from the graph.
+     * @brief Deletes a node from the graph.
      *
-     * Removes the node specified by vertex 'u' from the graph and all edges connected to it.
-     * Updates the graph's adjacency list accordingly.
+     * Removes node `u` and all associated edges from the graph.
+     * If `u` is out of the range of valid vertices, an error message is displayed.
      *
-     * @param u The index of the vertex to be deleted. It must be within the range of existing vertices.
+     * @param u The index of the node to be deleted. Must be within the valid range of vertices.
      */
     void deleteNode(const int u) {
         if (u < 0 || u >= numVertices) {
@@ -170,6 +182,21 @@ public:
             if (i != u) {
                 adjacencyList[i].deleteByValue(u);
             }
+        }
+    }
+
+
+    /**
+     * @brief Prints the adjacency list representation of the graph.
+     *
+     * Iterates through each vertex in the graph and displays its adjacent vertices
+     * as stored in the corresponding linked list. Outputs the list for each vertex
+     * to the console, showing the vertex index followed by a colon and its adjacency list.
+     */
+    void display() const {
+        for (int i = 0; i < numVertices; ++i) {
+            cout << "Vertex " << i << ": ";
+            adjacencyList[i].display();
         }
     }
 };
