@@ -5,6 +5,13 @@
 #include "Graph.cpp"
 using namespace std;
 
+/**
+ * Loads a road network from a specified file and populates the graph with edges representing roads between intersections.
+ * Each line in the file should contain two intersections (characters) and a travel time (float), separated by commas.
+ *
+ * @param graph Reference to the Graph object that will be populated with the road network data.
+ * @param fileName The name of the file from which to load the road network data. The file should be accessible and in the expected format.
+ */
 void loadRoadNetwork(Graph &graph, const string &fileName) {
     ifstream file(fileName);
     if (!file.is_open()) {
