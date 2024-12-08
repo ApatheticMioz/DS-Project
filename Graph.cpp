@@ -187,14 +187,17 @@ public:
 
 
     /**
-     * @brief Prints the adjacency list representation of the graph.
+     * @brief Displays the vertices and their respective adjacency lists.
      *
-     * Iterates through each vertex in the graph and displays its adjacent vertices
-     * as stored in the corresponding linked list. Outputs the list for each vertex
-     * to the console, showing the vertex index followed by a colon and its adjacency list.
+     * Iterates through each vertex in the graph and displays the vertex
+     * along with its adjacency list, if the adjacency list is not empty.
      */
     void display() const {
         for (int i = 0; i < numVertices; ++i) {
+            if (adjacencyList[i].isEmpty()) {
+                continue;
+            }
+
             cout << "Vertex " << i << ": ";
             adjacencyList[i].display();
         }
