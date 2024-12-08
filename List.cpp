@@ -31,8 +31,7 @@ public:
      * @param w The float weight associated with the node.
      * @return An instance of a Node object with specified data and weight.
      */
-    Node(const int d, const float w) : data(d), weight(w), next(nullptr) {
-    }
+    Node(const int d, const float w) : data(d), weight(w), next(nullptr) {}
 };
 
 /**
@@ -54,8 +53,7 @@ class LinkedList {
      * @return An instance of LinkedList with no nodes.
      */
 public:
-    LinkedList() : head(nullptr) {
-    }
+    LinkedList() : head(nullptr) {}
 
     /**
      * @brief Destructor for the LinkedList class.

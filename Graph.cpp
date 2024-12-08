@@ -28,8 +28,7 @@ class Graph {
      * @return A new Graph object with initialized adjacency lists.
      */
 public:
-    explicit Graph(const int nVert) : adjacencyList(nVert), numVertices(nVert) {
-    }
+    explicit Graph(const int nVert) : adjacencyList(nVert), numVertices(nVert) {}
 
     /**
      * Copy constructor for the Graph class.
@@ -37,8 +36,7 @@ public:
      * @param other The Graph object to be copied.
      * @return A new instance of the Graph class that is a copy of the provided Graph.
      */
-    Graph(const Graph &other) : adjacencyList(other.adjacencyList), numVertices(other.numVertices) {
-    }
+    Graph(const Graph &other) : adjacencyList(other.adjacencyList), numVertices(other.numVertices) {}
 
     /**
      * Assignment operator for the Graph class.
